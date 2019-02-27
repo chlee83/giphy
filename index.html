@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Giphy</title>
+
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Added link to the jQuery Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- css -->
+    <style>
+        .animal {margin-right: 7px; margin-bottom: 7px;}
+        p {margin: 0px;}
+        
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container my-4">
+
+        <!-- top jumbotron for buttons -->
+        <div class="row jumbotron jumbotron-fluid border py-4 bg-light">
+            <div class="col-4">
+                <h3>Add an animal</h3>
+                <form>
+                    <div class="form-group">
+                      <input type="text" class="form-control" id="inputText" placeholder="">
+                    </div>
+                    <button type="submit" class="btn btn-outline-secondary" id="addAnimal">Submit</button>
+                  </form>
+            </div>
+
+            <div class="col-8">
+                <div class="buttonsList"></div>
+            </div>
+        </div>
+
+        <div class="row jumbotron jumbotron-fluid bg-white text-center">
+            <div class="col-12 images d-flex align-content-start flex-wrap">
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+<!-- javascript file -->
+<script type="text/javascript" src="assets/javascript/app.js"></script>
+
+</body>
+
+
+</html>
