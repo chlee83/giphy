@@ -1,5 +1,13 @@
 $(document).ready(function() {
 
+/*******************
+ * Notes:  The giphy website doesn't seem to allow downloading of gifs
+ * I believe all the code is correct but the download button is going to 
+ * the image link and not downloading so it's not doing what it should.
+ */
+
+
+
 // List of classes for html
 // form-control  buttonsList  images
 // apiKey: T0s8H2m5E8LgKBd12fUn0RY63Wzo7iiT
@@ -10,17 +18,23 @@ var animals = ["dog", "cat", "mouse", "lion", "horse", "bird", "cheetah", "squir
                 "ferret", "whale", "shark", "bear", "polar bear", "sloth", "gecko", "vulture",
                 "elephant"];
 
+
+var getAnimal;
+
+//variable for increasing gifs per click.
+var n = 10;
+
 //display animal gifs fuction
 function displayAnimalInfo() {
 
     $(".images").empty();
 
     // Grabbing and storing the data-animal property value from the button
-    var getAnimal = $(this).attr("data-animal");
+    getAnimal = $(this).attr("data-animal");
 
     // Constructing a queryURL using the animal name
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + 
-    getAnimal + "&api_key=T0s8H2m5E8LgKBd12fUn0RY63Wzo7iiT&limit=10"
+    getAnimal + "&api_key=T0s8H2m5E8LgKBd12fUn0RY63Wzo7iiT&limit=10";
 
     //ajax request from queryURL
     $.ajax({
@@ -34,36 +48,115 @@ function displayAnimalInfo() {
         console.log(response);
 
         var results = response.data;
-        for(var i = 0; i < results.length; i++) {
+        for(var i = 0; i < 10; i++) {
 
             //create a new div tag
             var animalDiv = $("<div>");
-            animalDiv.addClass("mx-1 my-3")
+            animalDiv.addClass("mx-1 my-3");
 
             // create a new paragraph tag that holds the results and rating of image
-            var p = $("<p>").text("Rating: " + results[i].rating);
+            var p = $("<p>").text(results[i].title);
+            var pB = $("<p>").text("Rating: " + results[i].rating);
 
             //create new image
             var animalImage = $("<img>");
 
-            animalImage.addClass("gif border border-secondary")
+            animalImage.addClass("gif border border-secondary");
 
             //add attribute of source of image
             animalImage.attr("src", results[i].images.fixed_height_still.url);
             animalImage.attr("data-still", results[i].images.fixed_height_still.url);
             animalImage.attr("data-animate", results[i].images.fixed_height.url);
-            animalImage.attr("data-state", "still")
+            animalImage.attr("data-state", "still");
 
+            //adding a button to download image (But the website doesn't allow it!)
+            var animalLink = $("<a href='" + results[i].images.original.url + "'>").text("download");
+            animalLink.attr("download");
+            animalLink.addClass("btn btn-outline-secondary downloadbtn");
+            
+   
             //adding paragraph and image tags to the animal div
             animalDiv.append(p);
             animalDiv.append(animalImage);
+            animalDiv.append(pB);
+            animalDiv.append(animalLink);
 
             $(".images").prepend(animalDiv);
         }
+        n = 10;
+    });
 
-
-    })
 }
+
+//add 10 more gifs of the same type
+function getMore() {
+
+    event.preventDefault();
+
+    // Constructing a queryURL using the animal name
+    var queryTwoURL = "https://api.giphy.com/v1/gifs/search?q=" + 
+    getAnimal + "&api_key=T0s8H2m5E8LgKBd12fUn0RY63Wzo7iiT&limit=" + (n + 10);
+
+    //ajax request from queryURL
+    $.ajax({
+        url: queryTwoURL,
+        method: "GET"
+    })
+
+    .then(function(responseTwo) {
+
+        console.log(queryTwoURL);
+        console.log(responseTwo);
+
+        var resultsTwo = responseTwo.data;
+        for(var i = n; i < (n + 10); i++) {
+
+            //create a new div tag
+            var animalDiv = $("<div>");
+            animalDiv.addClass("mx-1 my-3");
+
+            // create a new paragraph tag that holds the results and rating of image
+            var p = $("<p>").text(resultsTwo[i].title);
+            var pB = $("<p>").text("Rating: " + resultsTwo[i].rating);
+
+            //create new image
+            var animalImage = $("<img>");
+
+            animalImage.addClass("gif border border-secondary");
+
+            //add attribute of source of image
+            animalImage.attr("src", resultsTwo[i].images.fixed_height_still.url);
+            animalImage.attr("data-still", resultsTwo[i].images.fixed_height_still.url);
+            animalImage.attr("data-animate", resultsTwo[i].images.fixed_height.url);
+            animalImage.attr("data-state", "still");
+
+           //adding a button to download image (But the website doesn't allow it!)
+            var animalLink = $("<a href='" + resultsTwo[i].images.original.url + "'>").text("download");
+            animalLink.attr("download");
+            animalLink.addClass("btn btn-outline-secondary downloadbtn");
+            
+    
+            //adding paragraph and image tags to the animal div
+            animalDiv.append(p);
+            animalDiv.append(animalImage);
+            animalDiv.append(pB);
+            animalDiv.append(animalLink);
+
+            $(".images").prepend(animalDiv);
+
+
+
+        }
+
+        //increase n by 10
+        n += 10;
+
+    });
+
+};
+
+
+
 
 //start and stop gif
 function gifRender() {
@@ -126,10 +219,13 @@ $("#addAnimal").on("click", function(event) {
     }
 });
 
+
 // adding an on click listener to all elements with a class of animal
 $(document).on("click", ".animal", displayAnimalInfo);
 
 $(document).on("click", ".gif", gifRender);
+
+$(document).on("click", "#get-more", getMore);
 
 renderButtons();
 
