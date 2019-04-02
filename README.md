@@ -11,5 +11,5 @@
 
 * Clicking the gif after it is animated will make the gif a still image again.
 
-https://chlee83.github.io/giphy/ - automatic!
-[GitHub](https://chlee83.github.io/giphy/)
+_Link_
+[Giphy](https://chlee83.github.io/giphy/)
